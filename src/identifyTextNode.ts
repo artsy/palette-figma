@@ -1,3 +1,6 @@
+// TODO - import lodash.capitalize instead of the whole thing
+import { capitalize, findKey } from 'lodash';
+
 export function identifyTextNode(node: TextNode) {
   const nodeData = {
     text: node.characters,
@@ -11,10 +14,20 @@ export function identifyTextNode(node: TextNode) {
 
   return {
     ...nodeData,
-    componentText: formatComponentText(nodeData),
+    componentSource: formatComponentSource(nodeData),
   };
 }
 
-function formatComponentText(nodeData) {
-  return '<Serif />';
+function formatComponentSource(nodeData) {
+  // TODO - extract this
+  let type = 'unknownFont';
+  if (nodeData.fontFamily.match(/garamond/i)) {
+    type = 'serif';
+  } else if (nodeData.fontFamily.match(/unica/i)) {
+    type = 'sans';
+  } else if (nodeData.fontFamily.match(/avant/i)) {
+    type = 'display';
+  }
+
+  return `<${capitalize(type)} />`;
 }

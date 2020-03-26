@@ -5,6 +5,9 @@ const inspectorFontFamily = document.getElementById('inspector-font-family');
 const inspectorFontStyle = document.getElementById('inspector-font-style');
 const inspectorFontSize = document.getElementById('inspector-font-size');
 const inspectorLineHeight = document.getElementById('inspector-line-height');
+const inspectorComponentSource = document.getElementById(
+  'inspector-component-source'
+);
 
 onmessage = event => {
   if (event.data.pluginMessage.length === 0) {
@@ -13,6 +16,7 @@ onmessage = event => {
     inspectorFontStyle.innerText = '';
     inspectorFontSize.innerText = '';
     inspectorLineHeight.innerText = '';
+    inspectorComponentSource.innerText = '';
   } else {
     const item = event.data.pluginMessage[0];
     inspectorText.innerText = item.text;
@@ -20,5 +24,6 @@ onmessage = event => {
     inspectorFontStyle.innerText = item.fontStyle;
     inspectorFontSize.innerText = item.fontSize;
     inspectorLineHeight.innerText = item.lineHeight;
+    inspectorComponentSource.innerText = item.componentSource;
   }
 };
