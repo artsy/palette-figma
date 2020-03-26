@@ -8,7 +8,7 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Serif ');
+      expect(result.componentSource).toContain('<Serif>');
     });
 
     it('identifies Unica77 LL as Sans', () => {
@@ -17,7 +17,7 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Sans ');
+      expect(result.componentSource).toContain('<Sans>');
     });
 
     // TODO - figure out what the actual display font is
@@ -27,7 +27,31 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Display ');
+      expect(result.componentSource).toContain('<Display>');
+    });
+  });
+
+  describe('text contents', () => {
+    it('emits text content of selected node', () => {
+      const textNode = aTextNode();
+      textNode.characters = 'The contents of the text node';
+
+      const result = identifyTextNode(textNode as TextNode);
+
+      expect(result.componentSource).toContain(
+        '>The contents of the text node<'
+      );
+    });
+  });
+
+  describe('italics', () => {
+    it('emits italic prop for italic text', () => {
+      const textNode = aTextNode();
+      textNode.fontName.style = 'Italic';
+
+      const result = identifyTextNode(textNode as TextNode);
+
+      expect(result.componentSource).toContain('<Serif italic>');
     });
   });
 });

@@ -1,11 +1,12 @@
 // TODO - import lodash.capitalize instead of the whole thing
+//   or use lodash-es (webpack should treeshake it)
 import { capitalize, findKey } from 'lodash';
 
 export function identifyTextNode(node: TextNode) {
   const nodeData = {
     text: node.characters,
     fontFamily: (node.fontName as FontName).family,
-    fontStyle: (node.fontName as FontName).style,
+    italic: (node.fontName as FontName).style === 'Italic',
     fontSize: node.fontSize,
     // tsc: is this how i type lineHeight as an unnamed type of a union type?
     //   e.g. `{ value: number} | { unit: "AUTO" }`
@@ -19,15 +20,23 @@ export function identifyTextNode(node: TextNode) {
 }
 
 function formatComponentSource(nodeData) {
+  const { fontFamily, italic, text } = nodeData;
+
   // TODO - extract this
   let type = 'unknownFont';
-  if (nodeData.fontFamily.match(/garamond/i)) {
+  if (fontFamily.match(/garamond/i)) {
     type = 'serif';
-  } else if (nodeData.fontFamily.match(/unica/i)) {
+  } else if (fontFamily.match(/unica/i)) {
     type = 'sans';
-  } else if (nodeData.fontFamily.match(/avant/i)) {
+  } else if (fontFamily.match(/avant/i)) {
     type = 'display';
   }
 
-  return `<${capitalize(type)} />`;
+  const componentTag = capitalize(type);
+  return (
+    '<' +
+    componentTag +
+    (italic ? ' italic' : '') +
+    `>${text}</${componentTag}>`
+  );
 }
