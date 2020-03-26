@@ -1,9 +1,4 @@
-// This plugin will open a modal to prompt the user to enter a number, and
-// it will then create that many rectangles on the screen.
-
-// This file holds the main code for the plugins. It has access to the *document*.
-// You can access browser APIs in the <script> tag inside "ui.html" which has a
-// full browser enviroment (see documentation).
+import { identifyTextNode } from './identifyTextNode.ts';
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
@@ -13,13 +8,7 @@ figma.on('selectionchange', () => {
   for (const node of figma.currentPage.selection) {
     if (node.type === 'TEXT') {
       console.log('current selection:', node);
-      results.push({
-        text: node.characters,
-        fontFamily: (node.fontName as FontName).family,
-        fontStyle: (node.fontName as FontName).style,
-        fontSize: node.fontSize,
-        lineHeight: (node.lineHeight as any).value,
-      });
+      results.push(identifyTextNode(node));
     }
   }
 
