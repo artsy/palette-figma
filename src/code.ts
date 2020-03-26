@@ -1,7 +1,7 @@
 import { identifyTextNode } from './identifyTextNode';
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { height: 300, width: 400 });
+figma.showUI(__html__, { height: 400, width: 500 });
 
 figma.on('selectionchange', () => {
   const results = [];
