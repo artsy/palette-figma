@@ -24,7 +24,7 @@ The code itself is transpiled by webpack, but you'll still need to re-start the 
 
 ## Things to watch out for
 
-### You can run a plugin on a file that you have edit access to
+### You can only run a plugin on a file to which you have "edit" rights
 
 So if you're looking at a design shared by someone, and you only have view access, you won't be able to run this or any other plugins. This seems likely a result of the fact that plugins have access to edit the current file.
 
@@ -32,6 +32,8 @@ To work around this limitation:
 
 - Acquire write access to the file, or
 - "Copy this file to your drafts" and inspect your own editable version
+
+The Figma team has thoughts about allowing plugins to run on files with "view only" access, but [as of March 26, 2020 there is no progress on this feature](https://figmaplugins.slack.com/archives/CHPTY6TFD/p1572560097352400).
 
 ## Production build
 
