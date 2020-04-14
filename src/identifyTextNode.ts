@@ -1,6 +1,6 @@
 // TODO - import lodash.capitalize instead of the whole thing
 //   or use lodash-es (webpack should treeshake it)
-import { capitalize, findKey } from 'lodash';
+import { capitalize } from 'lodash';
 
 export function identifyTextNode(node: TextNode) {
   const nodeData = {
