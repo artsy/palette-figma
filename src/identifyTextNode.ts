@@ -1,17 +1,9 @@
 // TODO - import lodash.capitalize instead of the whole thing
 //   or use lodash-es (webpack should treeshake it)
-import { capitalize } from 'lodash';
+import { capitalize, get } from 'lodash';
 
 export function identifyTextNode(node: TextNode) {
-  const nodeData = {
-    text: node.characters,
-    fontFamily: (node.fontName as FontName).family,
-    italic: (node.fontName as FontName).style === 'Italic',
-    fontSize: node.fontSize,
-    // tsc: is this how i type lineHeight as an unnamed type of a union type?
-    //   e.g. `{ value: number} | { unit: "AUTO" }`
-    lineHeight: (node.lineHeight as { value: number }).value,
-  };
+  const nodeData = parseNodeData(node);
 
   return {
     ...nodeData,
@@ -19,10 +11,20 @@ export function identifyTextNode(node: TextNode) {
   };
 }
 
-function formatComponentSource(nodeData) {
-  const { fontFamily, italic, text } = nodeData;
+function parseNodeData(node: TextNode) {
+  return {
+    text: node.characters,
+    fontFamily: (node.fontName as FontName).family,
+    style: (node.fontName as FontName).style,
+    fontSize: node.fontSize,
+    lineHeight: (node.lineHeight as {
+      value: number;
+    }).value,
+    color: get(node, 'fills[0].color'),
+  };
+}
 
-  // TODO - extract this
+function formatFontType(fontFamily: any) {
   let type = 'unknownFont';
   if (fontFamily.match(/garamond/i)) {
     type = 'serif';
@@ -31,12 +33,30 @@ function formatComponentSource(nodeData) {
   } else if (fontFamily.match(/avant/i)) {
     type = 'display';
   }
+  return type;
+}
 
-  const componentTag = capitalize(type);
+function formatItalic(style: string) {
+  return style === 'Italic' && 'italic';
+}
+
+function formatColor(color: RGB) {
+  return 'black100';
+}
+
+function formatComponentSource(nodeData) {
+  const { fontFamily, text, color, style } = nodeData;
+
+  const fontType = formatFontType(fontFamily);
+  const componentTag = capitalize(fontType);
+  const formattedColor = formatColor(color);
+  const formattedItalic = formatItalic(style);
+
   return (
     '<' +
     componentTag +
-    (italic ? ' italic' : '') +
+    (formattedItalic ? ` ${formattedItalic}` : '') +
+    (formattedColor ? ` color="${formattedColor}"` : '') +
     `>${text}</${componentTag}>`
   );
 }

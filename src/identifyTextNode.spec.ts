@@ -8,7 +8,7 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Serif>');
+      expect(result.componentSource).toContain('<Serif');
     });
 
     it('identifies Unica77 LL as Sans', () => {
@@ -17,7 +17,7 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Sans>');
+      expect(result.componentSource).toContain('<Sans');
     });
 
     it('identifies avant something as Display', () => {
@@ -26,7 +26,7 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Display>');
+      expect(result.componentSource).toContain('<Display');
     });
   });
 
@@ -50,12 +50,34 @@ describe('identifyTextNode', () => {
 
       const result = identifyTextNode(textNode as TextNode);
 
-      expect(result.componentSource).toContain('<Serif italic>');
+      expect(result.componentSource).toContain(' italic');
+    });
+  });
+
+  describe('color', () => {
+    it('emits black100 for 000', () => {
+      const textNode = aTextNode();
+      // textNode.fills = [{ type: 'SOLID', color: { r: 0.3, g: 0.3, b: 0.3 } }];
+
+      const result = identifyTextNode(textNode as TextNode);
+
+      expect(result.componentSource).toContain('color="black100"');
     });
   });
 });
 
 function aTextNode() {
+  const fills: ReadonlyArray<SolidPaint> = [
+    {
+      type: 'SOLID',
+      color: {
+        r: 0,
+        g: 0,
+        b: 0,
+      },
+    },
+  ];
+
   return {
     fontName: {
       family: 'Adobe Garamond Pro',
@@ -66,5 +88,6 @@ function aTextNode() {
     lineHeight: {
       value: 20,
     },
+    fills,
   };
 }
