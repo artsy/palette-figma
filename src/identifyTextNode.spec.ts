@@ -20,10 +20,9 @@ describe('identifyTextNode', () => {
       expect(result.componentSource).toContain('<Sans>');
     });
 
-    // TODO - figure out what the actual display font is
     it('identifies avant something as Display', () => {
       const textNode = aTextNode();
-      textNode.fontName.family = 'Avant';
+      textNode.fontName.family = 'AvantGardeGothicITC';
 
       const result = identifyTextNode(textNode as TextNode);
 
