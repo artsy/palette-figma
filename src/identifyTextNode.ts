@@ -1,6 +1,8 @@
 // TODO - import lodash.capitalize instead of the whole thing
 //   or use lodash-es (webpack should treeshake it)
-import { capitalize, get } from 'lodash';
+import { capitalize, get, findKey } from 'lodash';
+import { themeProps } from '@artsy/palette';
+import Color from 'color';
 
 export function identifyTextNode(node: TextNode) {
   const nodeData = parseNodeData(node);
@@ -41,7 +43,15 @@ function formatItalic(style: string) {
 }
 
 function formatColor(color: RGB) {
-  return 'black100';
+  const { r, g, b } = color;
+  const r255 = Math.round(r * 255);
+  const g255 = Math.round(g * 255);
+  const b255 = Math.round(b * 255);
+
+  return findKey(
+    themeProps.colors,
+    (c) => Color(c).rgbNumber() === Color.rgb(r255, g255, b255).rgbNumber()
+  );
 }
 
 function formatComponentSource(nodeData) {

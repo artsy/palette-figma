@@ -57,11 +57,32 @@ describe('identifyTextNode', () => {
   describe('color', () => {
     it('emits black100 for 000', () => {
       const textNode = aTextNode();
-      // textNode.fills = [{ type: 'SOLID', color: { r: 0.3, g: 0.3, b: 0.3 } }];
 
       const result = identifyTextNode(textNode as TextNode);
 
       expect(result.componentSource).toContain('color="black100"');
+    });
+
+    it('emits black30 for c2c2c2', () => {
+      const textNode = aTextNode();
+      textNode.fills = [
+        { type: 'SOLID', color: { r: 0.76078, g: 0.76078, b: 0.76078 } },
+      ];
+
+      const result = identifyTextNode(textNode as TextNode);
+
+      expect(result.componentSource).toContain('color="black30"');
+    });
+
+    it('emits purple100 for 6E1EFF', () => {
+      const textNode = aTextNode();
+      textNode.fills = [
+        { type: 'SOLID', color: { r: 0.4314, g: 0.1176, b: 1 } },
+      ];
+
+      const result = identifyTextNode(textNode as TextNode);
+
+      expect(result.componentSource).toContain('color="purple100"');
     });
   });
 });
